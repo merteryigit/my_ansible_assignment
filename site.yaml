@@ -1,0 +1,4 @@
+---
+- include: common.yaml
+- include: web.yaml
+- include: loadbalancer.yaml

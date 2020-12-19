@@ -1,0 +1,17 @@
+---
+- name: 'Install haproxy on lb server'
+  yum:
+    name:
+      - haproxy
+      - socat
+    state: installed
+
+- name: 'Copy haproxy configuration'
+  template:
+    src: /opt/playbooks/httpd-service/haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: 'Start haproxy service'
+  systemd:
+    name: haproxy
+    state: restarted

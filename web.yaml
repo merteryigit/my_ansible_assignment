@@ -1,0 +1,5 @@
+---
+- hosts: app1,app2
+  become: true
+  roles:
+    - webapp
