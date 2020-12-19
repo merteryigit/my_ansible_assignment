@@ -1,4 +1,4 @@
 ---
-- include: common.yaml
+- include: git.yaml
 - include: web.yaml
 - include: loadbalancer.yaml

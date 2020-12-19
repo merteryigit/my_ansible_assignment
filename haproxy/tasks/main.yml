@@ -13,7 +13,7 @@
   notify:
     - Restart haproxy
 
-- name: 'Start haproxy service'
+- name: 'Start haproxy service and enable'
   systemd:
     name: haproxy
     state: started

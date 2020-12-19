@@ -1,0 +1,5 @@
+---
+- hosts: webapp
+  become: true
+  roles:
+    - git
