@@ -1,0 +1,6 @@
+---
+- name: 'Install git on servers'
+  yum:
+    name: git
+    state: installed
+    update_cache: yes
