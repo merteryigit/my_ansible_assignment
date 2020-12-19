@@ -1,5 +1,5 @@
 ---
-- hosts: app1,app2
+- hosts: webapp
   become: true
   roles:
     - webapp

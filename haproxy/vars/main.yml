@@ -1,2 +1,8 @@
 ---
 # vars file for haproxy
+frontend_name : 'http-loadbalancer'
+listen_port : 80
+default_backend : 'web-servers'
+backend_name : 'web-servers'
+balance_mode : 'http'
+lb_algorithm : 'roundrobin'

@@ -8,7 +8,7 @@
 
 - name: 'Copy haproxy configuration'
   template:
-    src: /opt/playbooks/httpd-service/haproxy.cfg
+    src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
 
 - name: 'Start haproxy service'

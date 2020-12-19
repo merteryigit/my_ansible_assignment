@@ -1,2 +1,7 @@
 ---
 # handlers file for webapp
+    - name: Restart httpd
+      systemd:
+        name: httpd
+        state: restarted
+
