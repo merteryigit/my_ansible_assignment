@@ -1,5 +1,0 @@
----
-- hosts: webapp,loadbalancer
-  become: true
-  roles:
-    - common
