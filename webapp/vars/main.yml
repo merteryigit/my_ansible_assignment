@@ -1,2 +1,4 @@
 ---
 # vars file for webapp
+webapp_listen_port: 80
+webapp_installation_path: '/opt/webapp'

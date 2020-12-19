@@ -10,8 +10,11 @@
   template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
+  notify:
+    - Restart haproxy
 
 - name: 'Start haproxy service'
   systemd:
     name: haproxy
-    state: restarted
+    state: started
+    enabled: yes
