@@ -11,7 +11,7 @@
     update_cache: yes
 
 - name: 'Create ssh key for git repo auth'
-  command: ssh-keygen -t rsa -b 4096 -f ~/.ssh/webapp_rsa
+  command: ssh-keygen -t rsa -b 4096 -f ~/.ssh/webapp_rsa -N ''
   args:
     creates: ~/.ssh/webapp_rsa.pub
 
@@ -39,7 +39,3 @@
 
 
 
-#- name: 'Initialize git'
-#  command: git init
-#  args:
-#    chdir: "{{ webapp_installation_path }}"
