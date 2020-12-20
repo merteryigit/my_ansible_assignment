@@ -57,6 +57,26 @@ defaults
     timeout check           10s
     maxconn                 3000
 
+listen  stats   192.168.1.6:1989
+        mode            http
+        log             global
+
+        maxconn 10
+
+        clitimeout      100s
+        srvtimeout      100s
+        contimeout      100s
+        timeout queue   100s
+
+        stats enable
+        stats hide-version
+        stats refresh 30s
+        stats show-node
+        stats auth admin:password
+        stats uri  /haproxy?stats
+
+
+
 #---------------------------------------------------------------------
 # main frontend which proxys to the backends
 #---------------------------------------------------------------------
@@ -65,13 +85,21 @@ frontend  main *:5000
     acl url_static       path_end       -i .jpg .gif .png .css .js
 
     use_backend static          if url_static
-    default_backend             app
+    default_backend             {{ default_backend }}
+
+
+#---------------------------------------------------------------------
+# static backend for serving up images, stylesheets and such
+#---------------------------------------------------------------------
+backend static
+    balance     roundrobin
+    server      static 127.0.0.1:4331 check
+
 
 #---------------------------------------------------------------------
 # Haproxy configuration for serving our httpd application
 #---------------------------------------------------------------------
 
-{
 frontend {{ frontend_name }}
     bind *:{{ listen_port }}
     default_backend {{ default_backend }}
@@ -83,4 +111,3 @@ backend {{ backend_name }}
     {% for host in groups['webapp'] %}
     server {{ hostvars[host]['ansible_host']}} {{ host }}:{{ listen_port }} check
     {% endfor %}
-}
