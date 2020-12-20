@@ -1,0 +1,7 @@
+---
+# tasks file for lbenable
+- name: 'enable server in haproxy'
+  community.general.haproxy:
+    state: enabled
+    host: appserver1
+    backend: web-servers

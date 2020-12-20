@@ -1,0 +1,8 @@
+---
+# tasks file for lbdisable
+- name: 'disable server in haproxy'
+  community.general.haproxy:
+    state: disabled
+    host: appserver1
+    backend: web-servers
+

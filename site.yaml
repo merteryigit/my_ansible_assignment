@@ -1,4 +1,6 @@
 ---
 - include: git.yaml
+- include: disable.yaml
 - include: web.yaml
+- include: enable.yaml
 - include: loadbalancer.yaml

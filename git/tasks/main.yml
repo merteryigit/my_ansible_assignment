@@ -23,21 +23,11 @@
     group: root
     mode: '755'
 
-- name: Clone a private repository into /opt.
+- name: Clone httpd application repository into /opt.
   git:
     repo: "{{ git_repo_url }}"
     version: main
     dest: "{{ webapp_installation_path }}" 
     accept_hostkey: yes
   become: no
-
-- name: Git fetch 
-  command: git fetch
-  args:
-    chdir: "{{ webapp_installation_path }}"
-
-- name: Git pull
-  command: git pull
-  args:
-    chdir: "{{ webapp_installation_path }}"
 

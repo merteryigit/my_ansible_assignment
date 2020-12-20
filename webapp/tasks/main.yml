@@ -14,6 +14,18 @@
     src: httpd.conf.j2
     dest: /etc/httpd/conf/httpd.conf 
 
+
+- name: Git fetch
+  command: git fetch
+  args:
+    chdir: "{{ webapp_installation_path }}"
+
+- name: Git pull
+  command: git pull
+  args:
+    chdir: "{{ webapp_installation_path }}"
+
+
 - name: 'Start httpd service'
   systemd:
     name: httpd
