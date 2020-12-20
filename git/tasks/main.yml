@@ -31,11 +31,13 @@
     accept_hostkey: yes
   become: no
 
+- name: Git fetch 
+  command: git fetch
+  args:
+    chdir: /opt/webapp
 
-#- name: 'Clone webapp github repository'
-#  command: git clone {{ git_repo_url }}
-#  args:
-#    chdir: /opt/
-
-
+- name: Git pull
+  command: git pull
+  args:
+    chdir: /opt/webapp
 
