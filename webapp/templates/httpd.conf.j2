@@ -116,19 +116,19 @@ ServerAdmin root@localhost
 # documents. By default, all requests are taken from this directory, but
 # symbolic links and aliases may be used to point to other locations.
 #
-DocumentRoot "{{ webapp_installation_path }}/www/html"
+DocumentRoot "{{ webapp_installation_path }}"
 
 #
 # Relax access to content within /var/www.
 #
-<Directory "{{ webapp_installation_path }}/www">
+<Directory "{{ webapp_installation_path }}">
     AllowOverride None
     # Allow open access:
     Require all granted
 </Directory>
 
 # Further relax access to the default document root:
-<Directory "{{ webapp_installation_path }}/www/html">
+<Directory "{{ webapp_installation_path }}">
     #
     # Possible values for the Options directive are "None", "All",
     # or any combination of:

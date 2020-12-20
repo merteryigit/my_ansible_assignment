@@ -10,12 +10,36 @@
     state: installed
     update_cache: yes
 
-- name: 'Path for git initialization and html project'
-  file:
-    path: "/{{ webapp_installation_path }}/www/html"
-    state: directory
-
-- name: 'Initialize git'
-  command: git init
+- name: 'Create ssh key for git repo auth'
+  command: ssh-keygen -t rsa -b 4096 -f ~/.ssh/webapp_rsa
   args:
-    chdir: "{{ webapp_installation_path }}"
+    creates: ~/.ssh/webapp_rsa.pub
+
+- name: 'Create ssh config file'
+  copy:
+    src: /opt/roles/git/files/config
+    dest: ~/.ssh/config
+    owner: root
+    group: root
+    mode: '755'
+
+- name: Clone a private repository into /opt.
+  git:
+    repo: "{{ git_repo_url }}"
+    version: main
+    dest: /opt/webapp
+    accept_hostkey: yes
+  become: no
+
+
+#- name: 'Clone webapp github repository'
+#  command: git clone {{ git_repo_url }}
+#  args:
+#    chdir: /opt/
+
+
+
+#- name: 'Initialize git'
+#  command: git init
+#  args:
+#    chdir: "{{ webapp_installation_path }}"

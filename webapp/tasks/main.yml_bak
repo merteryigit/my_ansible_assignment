@@ -14,6 +14,22 @@
     src: httpd.conf.j2
     dest: /etc/httpd/conf/httpd.conf 
 
+- name: 'Create path for webapp'
+  file:
+    path: /opt/webapp
+    state: directory
+    mode: '0755'
+
+- name: 'Transfer necessary webapp files'
+  copy:
+    src: /root/http_service/files/index.html
+    dest: "{{ webapp_installation_path }}/index.html"
+    owner: root
+    group: root
+    mode: '755'
+  notify:
+    - Restart httpd
+
 - name: 'Start httpd service'
   systemd:
     name: httpd
