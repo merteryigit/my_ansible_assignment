@@ -1,3 +1,4 @@
 ---
 # vars file for common
 git_repo_url: git@github.com:merteryigit/webapp.git
+ssh_key_name: webapp_rsa 

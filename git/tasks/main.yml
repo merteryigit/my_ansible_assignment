@@ -11,13 +11,13 @@
     update_cache: yes
 
 - name: 'Create ssh key for git repo auth'
-  command: ssh-keygen -t rsa -b 4096 -f ~/.ssh/webapp_rsa -N ''
+  command: "ssh-keygen -t rsa -b 4096 -f ~/.ssh/{{ ssh_key_name }} -N ''"
   args:
-    creates: ~/.ssh/webapp_rsa.pub
+    creates: "~/.ssh/{{ ssh_key_name }}"
 
 - name: 'Create ssh config file'
   copy:
-    src: /opt/roles/git/files/config
+    src: config
     dest: ~/.ssh/config
     owner: root
     group: root
@@ -27,17 +27,17 @@
   git:
     repo: "{{ git_repo_url }}"
     version: main
-    dest: /opt/webapp
+    dest: "{{ webapp_installation_path }}" 
     accept_hostkey: yes
   become: no
 
 - name: Git fetch 
   command: git fetch
   args:
-    chdir: /opt/webapp
+    chdir: "{{ webapp_installation_path }}"
 
 - name: Git pull
   command: git pull
   args:
-    chdir: /opt/webapp
+    chdir: "{{ webapp_installation_path }}"
 
