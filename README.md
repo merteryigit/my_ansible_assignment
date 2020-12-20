@@ -1,38 +1,98 @@
-Role Name
-=========
+# Httpd Application Deployment
 
-A brief description of the role goes here.
+This repository consists of a set of ansible playbooks and roles which are used for deploying an httpd application on a single node or multiple nodes with a loadbalancer. 
 
-Requirements
-------------
+The roles have been written in compatibility with ansible 2.6+ and CentOS 7.5
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Task details can be found in role_name/tasks/main.yml file of each role.
 
-Role Variables
---------------
+Variables are available in role_name/vars/main.yml file of each role.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Stack
 
-Dependencies
-------------
+- git
+- httpd
+- haproxy
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Workflow Description
 
-Example Playbook
-----------------
+The workflow consists of the following steps:
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- Git installation on nodes
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  This step will install git on the httpd application nodes. 
+  
+- Creating ssh-key and ssh configuration file for github authentication
 
-License
--------
+  Ssh key name can be set by users prior to installation via 
+ git/vars/main.yaml file.
 
-BSD
+- Cloning the web application repository from github
 
-Author Information
-------------------
+  Httpd application repository will be cloned from github. Github 
+  repository url for the httpd application (avaiable at 
+  git/vars/main.yaml) can be set by users prior to installation.
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- Downloading and installing necessary httpd rpm package 
+
+  httpd package will be downloaded and installed on each node. Variables can be set for this step at webapp/vars/main.yml
+
+- Modify httpd configuration
+  
+  Httpd application installation path will be set in /etc/httpd/conf/httpd.conf file for running. Template for httpd.conf is available in webapp/templates/httpd.conf.j2
+
+- Git fetch and git pull operations will be triggered for pulling code updates.
+
+- Start httpd service
+
+- Install and configure haproxy on loadbalancer server. Template is available for the haproxy.cfg file in haproxy/templates/haproxy.cfg.j2
+
+## Host Configuration
+
+Nodes that the httpd application will be deployed and the loadbalancer can be set via "hosts" file in the repository.
+```
+[webapp]
+node1 
+node2 
+node3
+
+[loadbalancer]
+lb1 
+
+```
+
+## Usage
+
+site.yaml file includes all written ansible roles to deploy the application and deployment can be done by running:
+
+```
+ansible-playbook site.yaml
+```
+
+## Variables
+
+- Variables available under git/vars/main.yml
+
+```
+git_repo_url: git ssh url of the httpd application can be set
+ssh_key_name: key name in order not to overlap with the default ssh key
+```
+- Variables available under webapp/vars/main.yml
+
+```
+webapp_listen_port: listen port for http service 
+webapp_installation_path: '/opt/webapp'
+rpm_url: url for downloading desired httpd rpm package
+rpm_name: httpd rpm name
+```
+
+- Variables available under haproxy/vars/main.yml
+
+```
+frontend_name : name for frontend section
+listen_port : listen port for frontend (80 by default)
+default_backend : default backend name
+backend_name :  name for backend section
+balance_mode :  balance mode of choice (http by default)
+lb_algorithm : loadbalancing policy of choice (roundrobin by default)
+```
